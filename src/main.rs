@@ -1,3 +1,9 @@
+pub mod cpu;
+
+use dmg_01::cpu::CPU;
 fn main() {
-   dmg_01::run();
+
+   let mut cpu = CPU::new();
+
+   dmg_01::run(&mut cpu);
 }

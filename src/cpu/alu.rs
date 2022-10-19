@@ -1,21 +1,23 @@
-use super::instruction::{ArithmeticTarget, Instruction};
+use super::instruction::Instruction;
+use super::instruction::{ArithmeticTarget, ADDHLTarget};
 use crate::cpu::CPU;
 
 pub fn execute(cpu: &mut CPU, instruction: Instruction) {
     match instruction {
         Instruction::ADD(target) => match target {
-            ArithmeticTarget::A => todo!(),
-            ArithmeticTarget::B => todo!(),
-            ArithmeticTarget::C => {
-                let value = cpu.registers.c;
-                let new_value = add(cpu, value);
-                cpu.registers.a = new_value;
-            }
-            ArithmeticTarget::D => todo!(),
-            ArithmeticTarget::E => todo!(),
-            ArithmeticTarget::H => todo!(),
-            ArithmeticTarget::L => todo!(),
+            ArithmeticTarget::A => cpu.registers.a = add(cpu, cpu.registers.a),
+            ArithmeticTarget::B => cpu.registers.a = add(cpu, cpu.registers.b),
+            ArithmeticTarget::C => cpu.registers.a = add(cpu, cpu.registers.c),
+            ArithmeticTarget::D => cpu.registers.a = add(cpu, cpu.registers.d),
+            ArithmeticTarget::E => cpu.registers.a = add(cpu, cpu.registers.e),
+            ArithmeticTarget::H => cpu.registers.a = add(cpu, cpu.registers.h),
+            ArithmeticTarget::L => cpu.registers.a = add(cpu, cpu.registers.l),
         },
+        Instruction::ADDHL(target) => match target {
+            ADDHLTarget::BC => todo!(),
+            ADDHLTarget::DE => todo!(),
+            ADDHLTarget::HL => todo!(),
+        }
         _ => { /*add support for more instructions*/ }
     }
 }
@@ -32,16 +34,21 @@ fn add(cpu: &mut CPU, value: u8) -> u8 {
     new_value
 }
 
+fn add_hl(cpu: &mut CPU, value: u8) -> u8 {
+    todo!();
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
-    fn can_add_C() {
+    fn add_to_c() {
         let mut cpu = CPU::new();
         cpu.registers.c = 0x04;
         cpu.registers.a = 0x02;
         execute(&mut cpu, Instruction::ADD(ArithmeticTarget::C));
         assert_eq!(cpu.registers.a, 0x06);
+        assert!(!cpu.registers.f.carry)
     }
 
     #[test]
@@ -50,6 +57,7 @@ mod tests {
         cpu.registers.c = 0x04;
         cpu.registers.a = 0xFE;
         execute(&mut cpu, Instruction::ADD(ArithmeticTarget::C));
-        assert_eq!(cpu.registers.f.carry, true);
+        assert!(cpu.registers.f.carry);
+        assert_eq!(cpu.registers.a, 0x02);
     }
 }
