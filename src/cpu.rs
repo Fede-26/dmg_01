@@ -3,7 +3,7 @@ pub mod flags_register;
 pub mod instruction;
 pub mod registers;
 
-use instruction::{ArithmeticTarget, Instruction};
+use instruction::Instruction;
 
 use self::registers::Registers;
 
