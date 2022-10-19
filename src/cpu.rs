@@ -10,10 +10,10 @@ use self::registers::Registers;
 const STACK_SIZE: usize = 0xFF;
 
 pub struct CPU {
-    registers: Registers,
-    pc: u16, //program counter
-    sp: u16, //stack pointer
-    stack: [u16; STACK_SIZE],
+    pub registers: Registers,
+    pub pc: u16, //program counter
+    pub sp: u16, //stack pointer
+    pub stack: [u16; STACK_SIZE],
 }
 
 impl CPU {
@@ -28,9 +28,23 @@ impl CPU {
 
     pub fn execute(&mut self, instruction: Instruction) {
         match instruction {
-            Instruction::ADD(target) => alu::execute(self, instruction),
-            Instruction::ADDHL(target) => alu::execute(self, instruction),
-            _ => { /*add support for more instructions*/ }
+            Instruction::ADD(_) => alu::execute(self, instruction),
+            Instruction::ADC(_) => alu::execute(self, instruction),
+            Instruction::SUB(_) => alu::execute(self, instruction),
+            Instruction::SBC(_) => alu::execute(self, instruction),
+            Instruction::AND(_) => alu::execute(self, instruction),
+            Instruction::XOR(_) => alu::execute(self, instruction),
+            Instruction::OR(_) => alu::execute(self, instruction),
+            Instruction::CP(_) => alu::execute(self, instruction),
+            Instruction::INC(_) => alu::execute(self, instruction),
+            Instruction::DEC(_) => alu::execute(self, instruction),
+            Instruction::DAA => alu::execute(self, instruction),
+            Instruction::CPL => alu::execute(self, instruction),
+
+            Instruction::ADDHL(_) => alu::execute(self, instruction),
+            Instruction::ADDSP => alu::execute(self, instruction),
+            Instruction::LD => alu::execute(self, instruction),
+            // _ => { /*add support for more instructions*/ }
         }
     }
 
