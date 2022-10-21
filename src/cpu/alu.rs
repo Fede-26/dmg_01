@@ -149,9 +149,13 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) {
             IncDecTarget::SP => todo!(),
         },
 
-        Instruction::DAA => todo!(),
+        Instruction::DAA => cpu.registers.a = decimal_adjust(cpu, cpu.registers.a),
 
-        Instruction::CPL => todo!(),
+        Instruction::CPL => {
+            cpu.registers.a = !cpu.registers.a;
+            self.registers.f.subtract = true;
+            self.registers.f.half_carry = true;
+        }
 
         Instruction::ADDHL(target) => match target {
             ADDHLTarget::BC => {
@@ -240,6 +244,37 @@ fn dec_8bit(cpu: &mut CPU, value: u8) -> u8 {
     // by 1 would cause a carry from the upper nibble to the lower nibble.
     cpu.registers.f.half_carry = value & 0xF == 0x0;
     new_value
+}
+
+fn decimal_adjust(cpu: &mut CPU, value: u8) -> u8 {
+    let flags = cpu.registers.f;
+    let mut carry = false;
+
+    let result = if !flags.subtract {
+        let mut result = value;
+        if flags.carry || value > 0x99 {
+            carry = true;
+            result = result.wrapping_add(0x60);
+        }
+        if flags.half_carry || value & 0x0F > 0x09 {
+            result = result.wrapping_add(0x06);
+        }
+        result
+    } else if flags.carry {
+        carry = true;
+        let add = if flags.half_carry { 0x9A } else { 0xA0 };
+        value.wrapping_add(add)
+    } else if flags.half_carry {
+        value.wrapping_add(0xFA)
+    } else {
+        value
+    };
+
+    cpu.registers.f.zero = result == 0;
+    cpu.registers.f.half_carry = false;
+    cpu.registers.f.carry = carry;
+
+    result
 }
 
 fn add_hl(cpu: &mut CPU, value: u16) -> u16 {
