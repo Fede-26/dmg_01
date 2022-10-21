@@ -153,8 +153,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) {
 
         Instruction::CPL => {
             cpu.registers.a = !cpu.registers.a;
-            self.registers.f.subtract = true;
-            self.registers.f.half_carry = true;
+            cpu.registers.f.subtract = true;
+            cpu.registers.f.half_carry = true;
         }
 
         Instruction::ADDHL(target) => match target {
