@@ -46,7 +46,6 @@ impl FlagsRegister {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;

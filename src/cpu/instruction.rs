@@ -11,11 +11,11 @@ pub enum Instruction {
     XOR(ArithmeticTarget),
     OR(ArithmeticTarget),
     CP(ArithmeticTarget),
-    INC(ArithmeticTarget),
-    DEC(ArithmeticTarget),
+    INC(IncDecTarget),
+    DEC(IncDecTarget),
     DAA,
     CPL,
-    
+
     // Arithmetic/logical 16-bit
     ADDHL(ADDHLTarget),
     //INC
@@ -26,7 +26,15 @@ pub enum Instruction {
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum ArithmeticTarget {
-    A, B, C, D, E, H, L, HLI, D8,
+    A,
+    B,
+    C,
+    D,
+    E,
+    H,
+    L,
+    HLI,
+    D8,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq)]
@@ -47,5 +55,8 @@ pub enum IncDecTarget {
 
 #[derive(Copy, Clone, Debug, PartialEq)]
 pub enum ADDHLTarget {
-    BC, DE, HL, SP,
+    BC,
+    DE,
+    HL,
+    SP,
 }

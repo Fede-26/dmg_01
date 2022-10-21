@@ -7,13 +7,13 @@ use instruction::Instruction;
 
 use self::registers::Registers;
 
-const STACK_SIZE: usize = 0xFF;
+const MEMORY_SIZE: usize = 0xFF;
 
 pub struct CPU {
     pub registers: Registers,
     pub pc: u16, //program counter
     pub sp: u16, //stack pointer
-    pub stack: [u16; STACK_SIZE],
+    pub bus: [u16; MEMORY_SIZE],
 }
 
 impl CPU {
@@ -21,8 +21,8 @@ impl CPU {
         Self {
             registers: Registers::new(),
             pc: 0x0,
-            sp: 0x0,    //FIXME: change begin of stack pointer
-            stack: [0x0; STACK_SIZE],
+            sp: 0x0, //FIXME: change begin of stack pointer
+            bus: [0x0; MEMORY_SIZE],
         }
     }
 
@@ -47,5 +47,4 @@ impl CPU {
             // _ => { /*add support for more instructions*/ }
         }
     }
-
 }
