@@ -39,6 +39,25 @@ pub enum Instruction {
     //Carry flag (in alu)
     CCF,
     SCF,
+
+    //Rotate instructions
+    RRA,
+    RLA,
+    RRCA,
+    RLCA,
+
+    // Prefix Instructions
+    BIT(PrefixTarget, BitPosition),
+    RES(PrefixTarget, BitPosition),
+    SET(PrefixTarget, BitPosition),
+    SRL(PrefixTarget),
+    RR(PrefixTarget),
+    RL(PrefixTarget),
+    RRC(PrefixTarget),
+    RLC(PrefixTarget),
+    SRA(PrefixTarget),
+    SLA(PrefixTarget),
+    SWAP(PrefixTarget),
 }
 
 impl Instruction {
@@ -285,4 +304,43 @@ pub enum StackTarget {
     BC,
     DE,
     HL,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum PrefixTarget {
+    A,
+    B,
+    C,
+    D,
+    E,
+    H,
+    L,
+    HLI,
+}
+
+#[derive(Copy, Clone, Debug, PartialEq)]
+pub enum BitPosition {
+    B0,
+    B1,
+    B2,
+    B3,
+    B4,
+    B5,
+    B6,
+    B7,
+}
+
+impl std::convert::From<BitPosition> for u8 {
+    fn from(position: BitPosition) -> u8 {
+        match position {
+            BitPosition::B0 => 0,
+            BitPosition::B1 => 1,
+            BitPosition::B2 => 2,
+            BitPosition::B3 => 3,
+            BitPosition::B4 => 4,
+            BitPosition::B5 => 5,
+            BitPosition::B6 => 6,
+            BitPosition::B7 => 7,
+        }
+    }
 }

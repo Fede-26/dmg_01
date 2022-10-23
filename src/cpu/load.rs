@@ -6,14 +6,7 @@ use super::instruction::{
 };
 use crate::cpu::CPU;
 
-pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
-    let load_type;
-    if let Instruction::LD(lt) = instruction {
-        load_type = lt;
-    } else {
-        panic!();
-    }
-
+pub fn execute(cpu: &mut CPU, load_type: LoadType) -> (u16, u8) {
     match load_type {
         // DESCRIPTION: load byte store in a particular register into another
         // particular register

@@ -2,6 +2,7 @@ pub mod alu;
 pub mod flags_register;
 pub mod instruction;
 pub mod load;
+pub mod register_manipulation;
 pub mod registers;
 
 use crate::memory_bus::MemoryBus;
@@ -71,7 +72,7 @@ impl CPU {
             Instruction::CCF => alu::execute(self, instruction),
             Instruction::SCF => alu::execute(self, instruction),
 
-            Instruction::LD(_) => load::execute(self, instruction),
+            Instruction::LD(load_type) => load::execute(self, load_type),
 
             Instruction::JP(test) => {
                 let jump_condition = match test {
@@ -143,7 +144,24 @@ impl CPU {
                     8
                 };
                 (next_pc, cycles)
-            } // _ => { /*add support for more instructions*/ }
+            }
+
+            Instruction::RRA => register_manipulation::execute(self, instruction),
+            Instruction::RLA => register_manipulation::execute(self, instruction),
+            Instruction::RRCA => register_manipulation::execute(self, instruction),
+            Instruction::RLCA => register_manipulation::execute(self, instruction),
+            Instruction::BIT(_, _) => register_manipulation::execute(self, instruction),
+            Instruction::RES(_, _) => register_manipulation::execute(self, instruction),
+            Instruction::SET(_, _) => register_manipulation::execute(self, instruction),
+            Instruction::SRL(_) => register_manipulation::execute(self, instruction),
+            Instruction::RR(_) => register_manipulation::execute(self, instruction),
+            Instruction::RL(_) => register_manipulation::execute(self, instruction),
+            Instruction::RRC(_) => register_manipulation::execute(self, instruction),
+            Instruction::RLC(_) => register_manipulation::execute(self, instruction),
+            Instruction::SRA(_) => register_manipulation::execute(self, instruction),
+            Instruction::SLA(_) => register_manipulation::execute(self, instruction),
+            Instruction::SWAP(_) => register_manipulation::execute(self, instruction),
+            // _ => { /*add support for more instructions*/ }
         }
     }
 
