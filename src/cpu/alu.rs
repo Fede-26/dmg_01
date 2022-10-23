@@ -1,3 +1,12 @@
+/* TODO:
+ * - Add HLI and D8 targets implementation (waiting for read bytes function in cpu)
+ * - Add ADDSP and LD instruction implementation
+ * - Add PC increment after instruction
+ * - Add Cycles spent in executing instruction
+ * - Add more tests
+ */
+
+
 use super::instruction::Instruction;
 use super::instruction::{ADDHLTarget, ArithmeticTarget, IncDecTarget};
 use crate::cpu::CPU;
@@ -122,7 +131,11 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) {
                 let value = cpu.registers.get_hl().wrapping_add(1);
                 cpu.registers.set_hl(value);
             }
-            IncDecTarget::SP => todo!(),
+            IncDecTarget::SP => {
+                let amount = cpu.sp;
+                let result = cpu.sp.wrapping_add(amount);
+                cpu.sp = result;
+            }
         },
 
         Instruction::DEC(target) => match target {
@@ -146,7 +159,11 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) {
                 let value = cpu.registers.get_hl().wrapping_sub(1);
                 cpu.registers.set_hl(value);
             }
-            IncDecTarget::SP => todo!(),
+            IncDecTarget::SP => {
+                let amount = cpu.sp;
+                let result = cpu.sp.wrapping_sub(amount);
+                cpu.sp = result;
+            }
         },
 
         Instruction::DAA => cpu.registers.a = decimal_adjust(cpu, cpu.registers.a),
