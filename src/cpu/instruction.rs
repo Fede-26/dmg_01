@@ -33,6 +33,12 @@ pub enum Instruction {
     //Stack manipulation
     PUSH(StackTarget),
     POP(StackTarget),
+    CALL(JumpTest),
+    RET(JumpTest),
+
+    //Carry flag (in alu)
+    CCF,
+    SCF,
 }
 
 impl Instruction {

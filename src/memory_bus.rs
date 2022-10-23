@@ -1,4 +1,3 @@
-
 const MEMORY_SIZE: usize = 0xFFFF;
 
 pub struct MemoryBus {
@@ -20,5 +19,4 @@ impl MemoryBus {
         let address = address as usize;
         self.memory[address] = value;
     }
-
 }

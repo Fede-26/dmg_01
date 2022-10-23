@@ -68,6 +68,9 @@ impl CPU {
             Instruction::ADDHL(_) => alu::execute(self, instruction),
             Instruction::ADDSP => alu::execute(self, instruction),
 
+            Instruction::CCF => alu::execute(self, instruction),
+            Instruction::SCF => alu::execute(self, instruction),
+
             Instruction::LD(_) => load::execute(self, instruction),
 
             Instruction::JP(test) => {
@@ -112,7 +115,35 @@ impl CPU {
                 };
                 (self.pc.wrapping_add(1), 12)
             }
-            // _ => { /*add support for more instructions*/ }
+            Instruction::CALL(test) => {
+                let jump_condition = match test {
+                    JumpTest::NotZero => !self.registers.f.zero,
+                    JumpTest::NotCarry => !self.registers.f.carry,
+                    JumpTest::Zero => self.registers.f.zero,
+                    JumpTest::Carry => self.registers.f.carry,
+                    JumpTest::Always => true,
+                };
+                self.call(jump_condition)
+            }
+            Instruction::RET(test) => {
+                let jump_condition = match test {
+                    JumpTest::NotZero => !self.registers.f.zero,
+                    JumpTest::NotCarry => !self.registers.f.carry,
+                    JumpTest::Zero => self.registers.f.zero,
+                    JumpTest::Carry => self.registers.f.carry,
+                    JumpTest::Always => true,
+                };
+                let next_pc = self.ret(jump_condition);
+
+                let cycles = if jump_condition && test == JumpTest::Always {
+                    16
+                } else if jump_condition {
+                    20
+                } else {
+                    8
+                };
+                (next_pc, cycles)
+            } // _ => { /*add support for more instructions*/ }
         }
     }
 
@@ -158,6 +189,28 @@ impl CPU {
         self.sp = self.sp.wrapping_add(1);
 
         (msb << 8) | lsb
+    }
+
+    fn call(&mut self, condition: bool) -> (u16, u8) {
+        let next_pc = self.pc.wrapping_add(3);
+        if condition {
+            self.push(next_pc);
+            (self.read_next_word(), 24)
+        } else {
+            (next_pc, 12)
+        }
+    }
+
+    fn ret(&mut self, condition: bool) -> u16 {
+        if condition {
+            self.pop()
+        } else {
+            self.pc.wrapping_add(1)
+        }
+    }
+
+    fn rst(&mut self) {
+        self.push(self.pc.wrapping_add(1));
     }
 
     pub fn read_next_byte(&self) -> u8 {

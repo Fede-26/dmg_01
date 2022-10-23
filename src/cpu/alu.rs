@@ -370,7 +370,27 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
             cpu.sp = result;
 
             (cpu.pc.wrapping_add(2), 16)
-        }        _ => {
+        }
+
+        Instruction::CCF => {
+            cpu.registers.f.subtract = false;
+            cpu.registers.f.half_carry = false;
+            cpu.registers.f.carry = !cpu.registers.f.carry;
+            (cpu.pc.wrapping_add(1), 4)
+        }
+
+        Instruction::SCF => {
+            // DESCRIPTION: (set carry flag) - set the carry flag to true
+            // PC:+1
+            // Cycles: 4
+            // Z:- S:0 H:0 C:1
+            cpu.registers.f.subtract = false;
+            cpu.registers.f.half_carry = false;
+            cpu.registers.f.carry = true;
+            (cpu.pc.wrapping_add(1), 4)
+        }
+
+        _ => {
             /*ignore other instructions*/
             (0, 0)
         }
