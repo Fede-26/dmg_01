@@ -1,4 +1,5 @@
 pub mod cpu;
+pub mod memory_bus;
 
 use dmg_01::cpu::CPU;
 fn main() {
