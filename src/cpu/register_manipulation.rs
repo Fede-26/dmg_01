@@ -45,8 +45,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
             bit_test(cpu, register, bit_position);
 
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -67,8 +67,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -89,8 +89,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -111,8 +111,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -133,8 +133,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -155,8 +155,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -198,8 +198,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -234,8 +234,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -256,8 +256,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -279,8 +279,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
             };
 
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 
@@ -301,8 +301,8 @@ pub fn execute(cpu: &mut CPU, instruction: Instruction) -> (u16, u8) {
                 }
             };
             match prefix {
-                PrefixTarget::HLI => (2, 16),
-                _ => (2, 8),
+                PrefixTarget::HLI => (cpu.pc.wrapping_add(2), 16),
+                _ => (cpu.pc.wrapping_add(2), 8),
             }
         }
 

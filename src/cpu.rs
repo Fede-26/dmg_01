@@ -17,6 +17,8 @@ pub struct CPU {
     pub pc: u16, //program counter
     pub sp: u16, //stack pointer
     pub bus: MemoryBus,
+    pub interrupts_enabled: bool,
+    pub is_halted: bool,
 }
 
 impl CPU {
@@ -26,6 +28,8 @@ impl CPU {
             pc: 0x0,
             sp: 0x0, //FIXME: change begin of stack pointer
             bus: MemoryBus::new(),
+            interrupts_enabled: true,
+            is_halted: false,
         }
     }
 
@@ -161,6 +165,29 @@ impl CPU {
             Instruction::SRA(_) => register_manipulation::execute(self, instruction),
             Instruction::SLA(_) => register_manipulation::execute(self, instruction),
             Instruction::SWAP(_) => register_manipulation::execute(self, instruction),
+
+            Instruction::RETI => {
+                self.interrupts_enabled = true;
+                (self.pop(), 16)
+            }
+            Instruction::RST(location) => {
+                self.rst();
+                (location.to_hex(), 24)
+            }
+
+            Instruction::HALT => {
+                self.is_halted = true;
+                (self.pc.wrapping_add(1), 4)
+            },
+            Instruction::NOP => (1, 4),
+            Instruction::DI => {
+                self.interrupts_enabled = false;
+                (self.pc.wrapping_add(1), 4)
+            }
+            Instruction::EI => {
+                self.interrupts_enabled = true;
+                (self.pc.wrapping_add(1), 4)
+            }
             // _ => { /*add support for more instructions*/ }
         }
     }
